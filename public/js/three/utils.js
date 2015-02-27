@@ -25,6 +25,10 @@ utils.parseTimeline=function(timeline,components){
       timeline[i].component[key]=glossary[timeline[i].id][key];
     }
     timeline[i].component.value=timeline[i].value;
+    if (timeline[i].component.hasOwnProperty('pointer')){
+      timeline[i].component.pointsTo=components[timeline[i].component.pointer];
+    }
+    
   }
 
   return timeline;
@@ -51,7 +55,13 @@ utils.extractScopes=function(allData){
 
 utils.displayText=function(obj){
   var d="";
-  if (obj.componentData.value && obj.componentData.value==='___function code'){
+  if (obj.componentData.pointsTo!==undefined && obj.componentData.pointsTo.type  && obj.componentData.pointsTo.type==='object'){
+    d+="<div>"+obj.componentData.name+" = { } </div>";
+  } else if (obj.componentData.pointsTo!==undefined && obj.componentData.pointsTo.type && obj.componentData.pointsTo.type==='array'){
+    d+="<div>"+obj.componentData.name+" = [ ] </div>";
+  } else if (obj.componentData.hasOwnProperty("type") && obj.componentData.type==='element'){
+    d+="<div>["+obj.componentData.name+"] = "+obj.componentData.value+"</div>";
+  } else if (obj.componentData.value && obj.componentData.value==='___function code'){
     d+="<div>function: "+obj.componentData.name+" declaration</div>";
   } else if (obj.componentData.type==='block' && obj.componentData.name==='if' && obj.componentData.hasOwnProperty('enter') ){
     d+="<div>if open</div>";

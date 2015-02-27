@@ -88,6 +88,7 @@ theatre.display=function(allData){
 				$("#three-modal").fadeOut();
 				composite.children.forEach(function( shape ) {
 					shape.material.color.setRGB( shape.grayness, shape.grayness, shape.grayness );
+					shape.material.opacity = 0;
 				});
 			} else {
 				var selectedId=intersects[0].object.componentData.id;
@@ -97,6 +98,9 @@ theatre.display=function(allData){
 				}
 				intersects[0].object.material.color.setRGB( 1, 1, 0 );
 				composite.children.forEach(function( shape ) {
+					if (shape.material.hasOwnProperty('opacity') ){
+						shape.material.opacity = 1;
+					}
 					if (shape.componentData.id===selectedId){
 						shape.material.color.setRGB( 1, 1, 0 );
 					}
