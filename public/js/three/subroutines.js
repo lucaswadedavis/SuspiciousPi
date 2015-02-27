@@ -30,41 +30,9 @@ subroutines.Fun=function(composite, opts){
 		subroutines.elementize(composite,opts);
 	}
 	
-	
-	///canvas madness starts here
-	var message=opts.componentData.hasOwnProperty('value') ? opts.componentData.value : "Yo!";
-	var canvas = document.createElement('canvas');
-	var context = canvas.getContext('2d');
-	context.font = "100px Sans-Serif";
-  context.textAlign = 'left';
-  context.textBaseline = 'middle';
-	// get size data (height depends only on font size)
-	var metrics = context.measureText( message );
-	var textWidth = metrics.width;
-	
-	// background color
-	context.fillStyle   = "rgba(255,255,255,1)";
-
-
-	context.fillText( message, 50, 50);
-	
-	// canvas contents will be used for a texture
-	var texture = new THREE.Texture(canvas) 
-	texture.needsUpdate = true;
-
-	var spriteMaterial = new THREE.SpriteMaterial( 
-		{ map: texture, useScreenCoordinates: false, transparent:true, opacity:0} );
-	var sprite = new THREE.Sprite( spriteMaterial );
-	sprite.scale.set(100,100,1.0);
-	sprite.position.set(0,50,opts.z1);
-	sprite.rotation.x=Math.PI/2;
-	sprite.grayness=0.2;
-	
-	sprite.componentData=opts.componentData;
-	sprite=utils.tweenify(sprite,{z1: z1, z2:z2, x1:opts.x1, x2:opts.x2} );
-	
-	composite.add( sprite );
-	
+	if (opts.componentData.value!==undefined){
+		subroutines.labelize(composite,opts);
+	}
 	
 };
 
@@ -466,6 +434,45 @@ subroutines.propertize=function(composite,opts){
 	ellipse.rotate = new TWEEN.Tween(ellipse.rotation).to({x:2*Math.PI},6000).repeat(Infinity).start();
 	
 	composite.add(ellipse);
+};
+
+subroutines.labelize=function(composite,opts){
+	
+	
+	///canvas madness starts here
+	var message=opts.componentData.hasOwnProperty('value') ? opts.componentData.value : "Yo!";
+	var canvas = document.createElement('canvas');
+	var context = canvas.getContext('2d');
+	context.font = "120px Courier";
+  context.textAlign = 'left';
+  context.textBaseline = 'middle';
+	// get size data (height depends only on font size)
+	var metrics = context.measureText( message );
+	var textWidth = metrics.width;
+	
+	// background color
+	context.fillStyle   = "rgba(255,255,255,1)";
+
+
+	context.fillText( message, 50, 50);
+	
+	// canvas contents will be used for a texture
+	var texture = new THREE.Texture(canvas) 
+	texture.needsUpdate = true;
+
+	var spriteMaterial = new THREE.SpriteMaterial( 
+		{ map: texture, useScreenCoordinates: false, transparent:true, opacity:0} );
+	var sprite = new THREE.Sprite( spriteMaterial );
+	sprite.scale.set(100,100,1.0);
+	sprite.rotation.x=Math.PI/2;
+	sprite.position.set(0,50,opts.z1);
+	sprite.grayness=0.2;
+	
+	sprite.componentData=opts.componentData;
+	sprite=utils.tweenify(sprite,{z1: opts.z1, z2:opts.z2, x1:opts.x1, x2:opts.x2} );
+	
+	composite.add( sprite );
+	
 };
 
 subroutines.Composite = function(data,scopes){
