@@ -382,9 +382,9 @@ subroutines.skybox = function(scene, maxSize) {
 	var x, y, z;
 	var interval = maxSize / 10;
 	var material = new THREE.LineBasicMaterial( { color: 0x555555 } );
-
+	var yMod = 500;
 	// back horizontal
-	y = -maxSize;
+	y = -maxSize+yMod;
 	while (y < maxSize) {
 		var geometry = new THREE.Geometry();
 		x = 2 * maxSize;
@@ -404,9 +404,9 @@ subroutines.skybox = function(scene, maxSize) {
 		x = 2 * maxSize;
 		z += interval; 
 
-		geometry.vertices.push( new THREE.Vector3( -maxSize, -maxSize, z))
-		geometry.vertices.push( new THREE.Vector3( x, -maxSize, z ) );
-		geometry.vertices.push( new THREE.Vector3( x, maxSize, z ) );
+		geometry.vertices.push( new THREE.Vector3( -maxSize, -maxSize+yMod, z))
+		geometry.vertices.push( new THREE.Vector3( x, -maxSize+yMod, z ) );
+		geometry.vertices.push( new THREE.Vector3( x, maxSize+yMod, z ) );
 		
 		var line = new THREE.Line( geometry, material );
 		scene.add(line);
@@ -417,7 +417,7 @@ subroutines.skybox = function(scene, maxSize) {
 	x = -maxSize;
 	while (x < 2 * maxSize) {
 		var geometry = new THREE.Geometry();
-		y = -maxSize;
+		y = -maxSize+yMod;
 		x += interval; 
 
 		geometry.vertices.push( new THREE.Vector3( x, y, -maxSize ) );

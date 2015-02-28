@@ -108,20 +108,26 @@ theatre.display=function(allData){
 		if (composite){
 			var intersects = raycaster.intersectObjects( composite.children, true );	
 			if (intersects.length<1){
+				//Luke this is why the modal only appears on mouseover
+				//if was you all along, you idiot
 				if (document.getElementById("modal-canvas")){
 					document.body.removeChild(document.getElementById("modal-canvas"));
 				}
+				/*
 				$("#three-modal").hide();
+				*/
 				composite.children.forEach(function( shape ) {
 					shape.material.color.setRGB( shape.grayness, shape.grayness, shape.grayness );
 					shape.material.opacity = 0;
 				});
 			} else {
 				var selectedId=intersects[0].object.componentData.id;
+				/*
 				$("#three-modal").html( utils.displayText(intersects[0].object) );
 				if (!$("#three-modal").is(":visible") ){
 					$("#three-modal").fadeIn();
 				}
+				*/
 				intersects[0].object.material.color.setRGB( 1, 1, 0 );
 				composite.children.forEach(function( shape ) {
 					if (shape.material.hasOwnProperty('opacity') ){
@@ -135,8 +141,10 @@ theatre.display=function(allData){
 				//raphael code here?
 				if ($("#modal-canvas").length===0){
 					modal = createModal();
-					utils.modal.donut(modal,event.clientX,event.clientY,intersects[0]);
+					//utils.modal.donut(modal,event.clientX,event.clientY,intersects[0]);
 					utils.modal.headline(modal,intersects[0]);
+					console.log(timeline,selectedId);
+					utils.rippleList(modal,utils.allValues(timeline,selectedId));
 				} 
 				///
 				
@@ -191,7 +199,7 @@ theatre.display=function(allData){
 
 				// camera rotation
 					// use extra camera to find rotation at target location
-				var nextCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 100000);
+				var nextCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 5000);
 				nextCamera.position.x = targetPosition.x;
 				nextCamera.position.y = targetPosition.y;
 				nextCamera.position.z = targetPosition.z;
