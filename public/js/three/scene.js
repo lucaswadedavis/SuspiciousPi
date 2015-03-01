@@ -24,15 +24,10 @@ theatre.display=function(allData){
 		// timeline elements
 
 		particleLight = subroutines.TimeLight();
-		particleLight.tween.start();
-		particleLight.tween.onComplete(function(){
-			particleLight.position.z=0;
-			particleLight.tween.start();
-		});
 		scene.add( particleLight );
-
-		composite = subroutines.Composite(data,scopes);
+		composite = subroutines.Composite(data,scopes,particleLight);
 		scene.add( composite );
+		particleLight.tween.start();
 
 
 		visualTimeline = subroutines.VisualTimeline(data, scopes);
