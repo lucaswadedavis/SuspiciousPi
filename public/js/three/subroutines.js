@@ -506,7 +506,7 @@ subroutines.SelectHalo=function(scene,opts){
 	
 	var path = new THREE.Path( curve.getPoints( 6 ) );
 	var geometry = path.createPointsGeometry( 6 );
-	var material = new THREE.LineBasicMaterial( { color : 0xffff00 } );
+	var material = new THREE.LineBasicMaterial( { color : 0xffff00 , transparent: true, opacity: 0} );
 	
 	// Create the final Object3d to add to the scene
 	var halo = new THREE.Line( geometry, material );

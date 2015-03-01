@@ -145,11 +145,13 @@ theatre.display=function(allData){
 					modal = createModal();
 					//utils.modal.donut(modal,event.clientX,event.clientY,intersects[0]);
 					utils.modal.headline(modal,intersects[0]);
-					
+					selectHalo.material.opacity=0;
 					selectHalo.position.x=intersects[0].object.position.x;
-					selectHalo.position.y=intersects[0].object.position.y-150;
+					selectHalo.position.y=intersects[0].object.position.y-250;
 					selectHalo.position.z=intersects[0].object.position.z;
-
+					new TWEEN.Tween(selectHalo.position).to({y:intersects[0].object.position.y-150}, 300).start();
+					new TWEEN.Tween(selectHalo.material).to({opacity:1},300).start();
+					
 					utils.rippleList(modal,utils.allValues(timeline,selectedId));
 				} 
 				///
