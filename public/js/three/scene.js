@@ -1,5 +1,5 @@
 var theatre = {
-	scenePaused: false, 
+	scenePaused: true, 
 	expanded: false, 
 	controlsEnabled: true, 
 	nodeView: false
@@ -27,8 +27,7 @@ theatre.display=function(allData){
 		scene.add( particleLight );
 		composite = subroutines.Composite(data,scopes,particleLight);
 		scene.add( composite );
-		particleLight.tween.start();
-
+		//particleLight.tween.start();
 
 		visualTimeline = subroutines.VisualTimeline(data, scopes);
 		scene.add(visualTimeline);
@@ -54,6 +53,7 @@ theatre.display=function(allData){
 		// scene.add(subroutines.Axes()[2]);
 		selectHalo = subroutines.SelectHalo(scene);
 		scene.add(selectHalo);
+		selectHalo.material.opacity = 0;
 
 		// renderer
 		renderer = new THREE.WebGLRenderer({antialias:true});
@@ -255,11 +255,17 @@ theatre.display=function(allData){
 		var action = theatre.expanded ? "collapse" : "expand";
 		for (var i=0;i<composite.children.length;i++){
 			composite.children[i][action].start();
-			if (action==='collapse'){
-				visualTimeline.hide.start();
-			} else {
-				visualTimeline.show.start();
-			}
+		}
+		if (action==='collapse'){
+			visualTimeline.hide.start();
+			theatre.pause();
+			particleLight.material.opacity = 0;
+			selectHalo.material.opacity = 0;
+		} else {
+			visualTimeline.show.start();
+			theatre.pause();
+			particleLight.material.opacity=1;
+			selectHalo.material.opacity = 0;
 		}
 		theatre.expanded=!theatre.expanded;
 	};

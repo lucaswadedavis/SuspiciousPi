@@ -326,7 +326,7 @@ subroutines.LoopCycle=function(composite,opts){
 };
 	
 subroutines.TimeLight=function(composite) {
-	var particleLight = new THREE.Mesh( new THREE.SphereGeometry( 0, 0, 0 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+	var particleLight = new THREE.Mesh( new THREE.SphereGeometry( 0, 0, 0 ), new THREE.MeshBasicMaterial( { color: 0xffffff, transparent:true, opacity:0 } ) );
 	var pointLight = new THREE.PointLight( 0xffffff, 2 );
 	particleLight.add( pointLight );
 	return particleLight;
@@ -597,11 +597,14 @@ subroutines.Composite = function(data,scopes,particleLight){
 	var scopeStack=[];
 	var x=0;
 	
-	var cycleTime=10000;
+	var cycleTime=6000;
 	var cycleStep=cycleTime/data.length;
 	var animations = [];
 	
 	animations.push(new TWEEN.Tween(particleLight.position).to({x:x}, cycleStep) );
+	//var nextTween = animations.push(new TWEEN.Tween(particleLight.material).to({opacity:1},300) );
+
+	//animations[0].chain(nextTween);
 
 	for (var i=0;i<data.length;i++){
 		z1 = leftMargin + (buffer*i);
@@ -624,7 +627,7 @@ subroutines.Composite = function(data,scopes,particleLight){
 		
 		
 		
-		var nextTween=new TWEEN.Tween(particleLight.position).to({x:x, z:z2}, cycleStep);
+		nextTween=new TWEEN.Tween(particleLight.position).to({x:x, z:z2}, cycleStep);
 		animations.push(nextTween);
 		animations[i].chain(animations[i+1]);
 
@@ -659,8 +662,13 @@ subroutines.Composite = function(data,scopes,particleLight){
 		}
 		
 	}
+	//nextTween = new TWEEN.Tween(particleLight.material).to({opacity:0},300); 
+	//animations.push(nextTween);
+	
 	animations[animations.length-1].chain(animations[0]);
 	particleLight.tween=animations[0];
+	
+	console.log(animations);
 	return composite;
 };	
 
