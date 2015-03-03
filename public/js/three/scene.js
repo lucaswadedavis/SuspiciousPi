@@ -206,8 +206,7 @@ theatre.display=function(allData){
 				nextCamera = null;
 				theatre.nodeView = true;
 				// console.log('theatre.lastPosition:', theatre.lastPosition);
-
-				
+ 				
 				//raphael code here?
 				if ($("#modal-canvas").length===0){
 					modal = createModal();
