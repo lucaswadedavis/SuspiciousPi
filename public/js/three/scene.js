@@ -25,23 +25,19 @@ theatre.display = function(allData, onRendered) {
 		theatre.scene = scene;
 
 		// timeline elements
-
 		particleLight = subroutines.TimeLight();
 		scene.add( particleLight );
 		composite = subroutines.Composite(data,scopes,particleLight);
 		theatre.maxSize = composite.maxSize;
 		scene.add( composite );
-		//particleLight.tween.start();
 
 		visualTimeline = subroutines.VisualTimeline(data, scopes);
 		scene.add(visualTimeline);
 
-		//will add the dotgrid to the scene;
 		subroutines.dotGrid(scene,data,scopes,composite.maxSize);
 		subroutines.skybox(scene, composite.maxSize);
 
-		// PerspectiveCamera   method args: (field of view angle, aspectRatio, near, far)
-		camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
+		camera = new THREE.PerspectiveCamera( 60, (window.innerWidth-20) / window.innerHeight, 1, 100000 );
 		theatre.camera = camera;
 		var camDistPartial = composite.maxSize / 2;
 		camera.position.x = -camDistPartial;
@@ -76,6 +72,8 @@ theatre.display = function(allData, onRendered) {
 		theatre.container = container;
 		container.appendChild(renderer.domElement);
 
+
+		renderer.setSize(window.innerWidth-20,window.innerHeight-$(container).offset().top);
 		// User interaction
 		window.addEventListener( 'mousemove', onMouseMove, false );
 		window.addEventListener( 'resize', onWindowResize, false );
@@ -88,7 +86,9 @@ theatre.display = function(allData, onRendered) {
 		windowHalfY = window.innerHeight / 2;
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
-		renderer.setSize( (window.innerWidth-20), (window.innerHeight-90) );
+		var topset = $(container).offset().top;
+
+		renderer.setSize( (window.innerWidth-20), (window.innerHeight-topset) );
 		// render();
 	}
 
@@ -103,7 +103,8 @@ theatre.display = function(allData, onRendered) {
 
 		//extract that offset into external variable that doesn't have to be recalculated every time... later
 		var x =  ( event.clientX / window.innerWidth ) * 2 - 1;
-		var y = - ( (event.clientY-$(container).offset().top ) / window.innerHeight ) * 2 + 1;
+		var topset = $(container).offset().top;
+		var y = - ( ( event.clientY ) / (window.innerHeight) ) * 2 + 1;
 
 		//check the type of camera
 		if ( camera instanceof THREE.OrthographicCamera ) {
@@ -132,12 +133,11 @@ theatre.display = function(allData, onRendered) {
 			// Intersects.length >= 1
 			} else {
 				// If not expanded, do nothing
-				if (!theatre.expanded) return;
+				if (!theatre.expanded) {return;}
 
 				theatre.highlightNode = intersects[0].object;
 				var selectedId = intersects[0].object.componentData.id;
 				utils.shine(composite,selectedId);
-
 			}
 		}
 	}
@@ -154,7 +154,8 @@ theatre.display = function(allData, onRendered) {
 		//check the type of camera
 		//extract that offset into an external variable that doesn't have to be recalculated every time... later
 		var x =  ( event.clientX / window.innerWidth ) * 2 - 1;
-		var y = - ( ( event.clientY-$(container).offset().top ) / window.innerHeight ) * 2 + 1;
+		var y = - ( ( event.clientY ) / window.innerHeight ) * 2 + 1;
+
 		if ( camera instanceof THREE.OrthographicCamera ) {
 	    vector.set( x, y, - 1 ); // z = - 1 important!
 	    vector.unproject( camera );
