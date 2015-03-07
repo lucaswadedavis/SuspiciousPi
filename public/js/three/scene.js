@@ -436,7 +436,7 @@ theatre.display = function(allData, onRendered) {
 			
 		} else {
 			visualTimeline.show.start();
-			particleLight.material.opacity = 1;
+			particleLight.material.opacity = 0.5;
 		}
 		theatre.pause();
 		selectHalo.material.opacity = 0;
