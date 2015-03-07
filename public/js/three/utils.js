@@ -21,7 +21,6 @@ utils.parseTimeline=function(allData){
     if (timeline[i].hasOwnProperty('snapshot') && i>0){
       timeline[i-1].component.snapshot=timeline[i].snapshot;
       timeline.splice(i,1);
-      console.log(lineline[i]);
       lineline.splice(i,1);
       i--;
       continue;
@@ -42,7 +41,7 @@ utils.parseTimeline=function(allData){
       timeline[i].component.pointsTo=components[timeline[i].component.pointer];
     }
     timeline[i].component.line=lineline[i].line;
-    timeline[i].component.time=lineline[i].line;
+    timeline[i].component.time=lineline[i].time;
   }
 
   return timeline;

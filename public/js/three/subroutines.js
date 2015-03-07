@@ -635,8 +635,13 @@ subroutines.Composite = function(data,scopes,particleLight){
 		var opts={z1:z1, z2:z2, x1:0, x2:x, componentData:data[i].component, radius:radius} ;
 		
 		
+		//console.log(data[i].component.time);
 		
-		nextTween=new TWEEN.Tween(particleLight.position).to({x:x, z:z2}, cycleStep);
+		var delorian=100;
+		if (i<data.length-1 && typeof data[i].component.time==='number' && typeof data[i+1].component.time==='number') {
+			delorian=1500*(data[i+1].component.time-data[i].component.time);
+		}
+		nextTween=new TWEEN.Tween(particleLight.position).to({x:x, z:z2}, delorian);
 		animations.push(nextTween);
 		animations[i].chain(animations[i+1]);
 
